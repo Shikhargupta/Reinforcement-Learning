@@ -22,7 +22,7 @@ Before getting into the algorithms -
 
 - In this method we select an epsilon value (much smaller compared to 1). It is the probability with which we 'explore' i.e. randomly select any machine collect sample.
 - (1 - epsilon) is the probablity with which we 'exploit' i.e. use the best-so-far machine to collect sample.
-- This[Return of the Multi-Armed Bandit/epsilon-greedy_bandit.py] python file implements this algorithm and is used to generate this graph of cumulative average after each turn.
+- [This](epsilon-greedy_bandit.py) python file implements this algorithm and is used to generate this graph of cumulative average after each turn.
 
 <p align="center">
   <img src="Return of the Multi-Armed Bandit/epsilon.png" width="500"/>
