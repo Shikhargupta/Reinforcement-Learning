@@ -29,4 +29,16 @@ Before getting into the algorithms -
 </p>
 
 
+### Optimistic Initial Value
 
+- An initial value for mean is selected which would be much more than expected. 
+- Only greedy operation is executed i.e. only 'exploit'.
+- After every update, the mean of the machine is lowered bringing it closer to the actual values.
+- The optimistic initial value balances the exploit-explore situation as the not-so-explored machine will have high mean value and hence would be the choice to play with.
+- Gives better results than Epsilon-Greedy.
+- [Here](optimistic-initial-value_bandit.py) is the implementation and below is the graph
+
+
+<p align="center">
+  <img src="optimistic.png" width="300"/>
+</p>
