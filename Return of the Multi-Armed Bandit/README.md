@@ -25,7 +25,7 @@ Before getting into the algorithms -
 - [This](epsilon-greedy_bandit.py) python file implements this algorithm and is used to generate this graph of cumulative average after each turn.
 
 <p align="center">
-  <img src="Return of the Multi-Armed Bandit/epsilon.png" width="500"/>
+  <img src="epsilon.png" width="300"/>
 </p>
 
 
