@@ -9,10 +9,10 @@
 - Balance Exploring (collecting data from all machines) + Exploiting (playing with the best-so-far machine).
 - Algorithms explained to solve this dilemma are:
 
-1. Epsilon Greedy 
+1. Epsilon Greedy
 2. Optimistic Initial Value
 
-Before getting into the algorithms - 
+Before getting into the algorithms -
 
 - Outcome of machine can be modeled either as binary (0 or 1) or by a Gaussian Random Variable with variance 1.
 - In this implementation Gaussian distributed outcomes are considered. Each machine has its own mean and we have to maximise the average outcome of our experimentation.
@@ -31,7 +31,7 @@ Before getting into the algorithms -
 
 ### Optimistic Initial Value
 
-- An initial value for mean is selected which would be much more than expected. 
+- An initial value for mean is selected which would be much more than expected.
 - Only greedy operation is executed i.e. only 'exploit'.
 - After every update, the mean of the machine is lowered bringing it closer to the actual values.
 - The optimistic initial value balances the exploit-explore situation as the not-so-explored machine will have high mean value and hence would be the choice to play with.
@@ -42,3 +42,10 @@ Before getting into the algorithms -
 <p align="center">
   <img src="optimistic.png" width="300"/>
 </p>
+
+### Upper Confidence Bound (UCB)
+
+- As we collect more data, the bound around the mean of a gaussian distribution shrinks. Flatter the distribution, lesser the data has been collected.
+- UCB uses this idea to solve explore-exploit dilemma.
+- A greedy search is run on UCB of all the means which is defined as a function of N/Nj. Lesser is Nj means higher is the value of its UCB means explore this more.
+- As the algorithm converges upper bounds shrink and we get the optimal solution.
