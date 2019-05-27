@@ -4,19 +4,19 @@
 
 - Components of a RL System
 	- Agent: One who plays the game.
-	- Environment: Agent interacts with it 
-	- State: It represents a particular configuration or setup of the environment that an agent can sense. Any action of the agent may change the state of the environment.
+	- Environment: Agent interacts with it
+	- State: It represents a particular configuration or setup of the environment that an agent can sense (not the whole environment). Any action of the agent may change the state of the environment.
 	- Rewards: It is given to the agent depending upon his action which brings a change in the state of the environment.
-	- Episode: One run of a game. 
+	- Episode: One run of a game.
 	- Terminal State: State from where no further action can be taken.
 
-
-- Rewards are not the measure of correct or incorrect action. It tells how good the action was. 
-
+- Rewards are not the measure of correct or incorrect action. It tells how good the action was.
+- Credit assignment - What actions led to this reward.
+- Delated rewards - How current actions affect the potential future rewards.
 
 ### Value Function
 
-- AI needs to have the ability of planning and foresight. It shoukd see how present actions will result in *Delayed Rewards*.
+- AI needs to have the ability of planning and foresight. It should see how present actions will result in *Delayed Rewards*.
 - Hence each state is assigned a *Value* depending upon the future rewards it yields.
 - Rewards are immediate while value is a measure of future rewards.
 - Value function of a state is the expected value of all future rewards possible when if we are in that state.
@@ -38,7 +38,7 @@
 
 #### Environment
 - Environment class provides agent with rewards.
-- It monitors the state of the game and notifies who has won the game or if the game is drawn. 
+- It monitors the state of the game and notifies who has won the game or if the game is drawn.
 
 
 The value function incorporates intelligence into an agent. After each episode the agent updates the value function and becomes better. The states are enumerated using a hash function which translates each state into a decimal number. Also, to address the explore-exploit dilemma epsilon greedy method is used. With a probability epsilon the agent takes a random action and otherwise chooses the action with maximum value function.
