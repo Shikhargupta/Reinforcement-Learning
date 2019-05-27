@@ -1,9 +1,20 @@
-from enum import Enum, auto
+from enum import Enum
 
-class game_status_rc(Enum):
-    GAME_IN_PROGRESS = auto()
-    GAME_OVER = auto()
+class AutoNumber(Enum):
+    def __new__(cls):
+        value = len(cls.__members__) + 1
+        obj = object.__new__(cls)
+        obj._value_ = value
+        return obj
 
-class win_rc(Enum):
-    WINNER_IS_X = auto()
-    WINNER_IS_O = auto()
+class game_status_rc(AutoNumber):
+    GAME_IN_PROGRESS = ()
+    GAME_OVER = ()
+    GAME_DRAW = ()
+
+class players(Enum):
+    PLAYER_X = -1
+    PLAYER_O = 1
+
+class params:
+    LENGTH = 3
