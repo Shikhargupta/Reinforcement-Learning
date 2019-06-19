@@ -15,7 +15,7 @@
 
 - Both the problems use Bellman equation in different forms.
 
-##### Policy Evaluation
+#### Policy Evaluation
 This method is used to determine value function given a policy. Value function is determined by using the bellman equation _pi(a|s)*p(s',r|s,a)*(V[s] = r + gamma*V[s'])_
 
 ![This](policy_eval.py) file implements policy evaluation for a uniformly distributed policy (pi(a|s) = 1/4) and a fixed policy (pi(a|s) = 1).
@@ -27,7 +27,7 @@ This method is used to determine value function given a policy. Value function i
 
 Above snippet shows the value functions of each state for two different policies.
 
-##### Policy Iteration
+#### Policy Iteration
 This method is used to find the optimal policy by using the Bellman equation. Max Q value is determined by iterating through all the actions and finding the argmax. After every policy change, value funciton is re-calculated.
 
 <p align="center">
@@ -36,7 +36,7 @@ This method is used to find the optimal policy by using the Bellman equation. Ma
 
 ![First](policy_iteration.py) we initialize the policy randomply and then perform policy iteration to determine the optimal policy.
 
-##### Windy Gridworld
+#### Windy Gridworld
 In above implementations the probability of landing into s' from s after taking an action a is deterministic. But this might not be the case in every environment. So ![in this gridworld](windy_gridworld.py) stochastic moves are implemented. The agent will move in the chosen direction with a probability of 0.5 and in the rest 3 directions with a probability of 0.5/3 each.
 
 <p align="center">
@@ -45,7 +45,7 @@ In above implementations the probability of landing into s' from s after taking 
 
 As expected, the value functions are different from deterministic moves but still the optimal policy remains same as the probability of taking the selected action is highest (if not 1).
 
-##### Value Iteration
+#### Value Iteration
 In above methods we first wait for the policy evaluatoin to converge and then run policy iteration every time. This might become inefficient in larger grids and more states.
 
 For a ![solution](value_iteration.py), policy iteration is done is the same loop as policy evaluation. And then after convergence just find the optimal policy (which is already determined).
