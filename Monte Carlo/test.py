@@ -1,5 +1,5 @@
 import numpy as np
 
-a = ['U','D','L','R']
-a.remove('U')
-print a
+a = {"first":1, "second":2}
+for q,w in a.iteritems():
+    print q,w
