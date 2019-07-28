@@ -7,10 +7,10 @@
 ### Calculation of Sample Mean of G (future rewards)
 - Play a number of episodes and record the rewards for all the encountered states (s,G).
 
-#### First visit method
+- #### First visit method
 Count the return only for the time instant which comes first.
 
-#### Every visit method
+- #### Every visit method
 Count the return for each instant in which we counter that state.
 
 - MC updates the states only we visit. We don't need to loop through all the states like in DP. We explore the states as we play.

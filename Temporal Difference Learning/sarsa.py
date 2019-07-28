@@ -1,5 +1,7 @@
 import numpy as np
 
+ALL_POSSIBLE_ACTIONS = ['D','U','L','R']
+
 class Grid:
     def __init__(self, height, width, start):
         self.height = height
@@ -34,7 +36,7 @@ class Grid:
             elif action == 'R':
                 self.j += 1
         else:
-            print "Cannot perform this action"
+            # print "Cannot perform this action"
             return 0
         return self.rewards[(self.i, self.j)]
 
@@ -83,6 +85,30 @@ def grid_world():
     grid.set(rewards, actions)
     return grid
 
+def negative_grid(step_cost = -0.1):
+    grid = grid_world()
+    grid.rewards.update({(0,0):step_cost,
+                         (0,1):step_cost,
+                         (0,2):step_cost,
+                         (1,0):step_cost,
+                         (1,2):step_cost,
+                         (2,0):step_cost,
+                         (2,1):step_cost,
+                         (2,2):step_cost,
+                         (2,3):step_cost})
+
+    return grid
+
+def random_action(a,eps=0.1):
+    draw = np.random.uniform()
+    if draw < (1-eps):
+        return a
+    else:
+        tmp = ['U','D','L','R']
+        tmp.remove(a)
+        action = np.random.choice(tmp)
+        return action
+
 def print_values(V, g):
     for i in range(g.height):
         print("---------------------------")
@@ -103,67 +129,66 @@ def print_policy(P, g):
             print "  %s  |" % a[0],
         print "\n"
 
-def play_game(grid, policy, gamma):
-    possible_start_states = grid.actions.keys()
-    random_start_state = np.random.choice(len(possible_start_states))
-
-    s = possible_start_states[random_start_state]
-    grid.set_state(s)
-    state_and_reward = [(s,0.0)]
-    while not grid.game_over():
-        action = policy[s]
-        reward = grid.take_action(action)
-        s = grid.current_state()
-        state_and_reward.append((s,reward))
-    G = 0.0
-    state_and_total = [(s,G)]
-    first = True
-    for s,r in reversed(state_and_reward):
-        if first:
-            reward = r
-            first = False
-            continue
-        G = reward + gamma*G
-        state_and_total.append((s,G))
-        reward = r
-    state_and_total.reverse()
-    return state_and_total[:-1]
+def max_dict(d):
+    # returns the argmax (key) and max (value) from a dictionary
+    # put this into a function since we are using it so often
+    max_key = None
+    max_val = float('-inf')
+    for k, v in d.items():
+        if v > max_val:
+            max_val = v
+            max_key = k
+    return max_key, max_val
 
 if __name__ == '__main__':
     gamma = 0.9
     SMALL_ENOUGH = 1e-4 # threshold for convergence
-    grid = grid_world()
+    ALPHA = 0.1
+    grid = negative_grid()
+
+    print "Grid Rewards"
+    print_values(grid.rewards, grid)
+
+    Q = {}
     V = {}
-    policy = {
-      (2,0): 'U',
-      (1,0): 'U',
-      (0,0): 'R',
-      (0,1): 'R',
-      (0,2): 'R',
-      (1,2): 'R',
-      (2,1): 'R',
-      (2,2): 'R',
-      (2,3): 'U'
-    }
+    policy = {}
     states = grid.all_states()
-    returns = {}
     for s in states:
-        if s in grid.actions.keys():
-            returns[s] = []
-        else:
-            V[s] = 0
+        Q[s] = {}
+        V[s] = 0
+        for a in ALL_POSSIBLE_ACTIONS:
+            Q[s][a] = 0
 
-    for t in range(1000):
-        results = play_game(grid,policy,gamma)
-        seen_states = []
-        for s,G in results:
-            if s not in seen_states:
-                seen_states.append(s)
-                returns[s].append(G)
-                V[s] = np.mean(returns[s])
+    update_count_sa = {}
+    update_count = {}
+    for s in states:
+        update_count_sa[s] = {}
+        for a in ALL_POSSIBLE_ACTIONS:
+            update_count_sa[s][a] = 1.0
+    for it in range(10000):
+        s = (2,0)
+        action = max_dict(Q[s])[0]
+        a = random_action(action)
 
-    print "Values:"
+        grid.set_state(s)
+        while not grid.game_over():
+            r = grid.take_action(a)
+            s2 = grid.current_state()
+            action = max_dict(Q[s2])[0]
+            a2 = random_action(action)
+            # print s,a,s2,a2,r
+            alpha = ALPHA/update_count_sa[s][a]
+            update_count_sa[s][a] += 0.005
+            Q[s][a] = Q[s][a] + alpha*(r + gamma*Q[s2][a2] - Q[s][a])
+
+            s = s2
+            a = a2
+
+    for s in grid.actions.keys():
+        policy[s], V[s] = max_dict(Q[s])
+
+    print "Final Values:"
     print_values(V,grid)
 
-    print "Policy:"
+    print "Final Policy"
     print_policy(policy,grid)

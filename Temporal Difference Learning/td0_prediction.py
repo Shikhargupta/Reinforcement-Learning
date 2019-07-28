@@ -34,7 +34,7 @@ class Grid:
             elif action == 'R':
                 self.j += 1
         else:
-            print "Cannot perform this action"
+            # print "Cannot perform this action"
             return 0
         return self.rewards[(self.i, self.j)]
 
@@ -103,6 +103,16 @@ def print_policy(P, g):
             print "  %s  |" % a[0],
         print "\n"
 
+def random_action(a,eps=0.1):
+    draw = np.random.uniform()
+    if draw < (1-eps):
+        return a
+    else:
+        tmp = ['U','D','L','R']
+        tmp.remove(a)
+        action = np.random.choice(tmp)
+        return action
+
 def play_game(grid, policy, gamma):
     possible_start_states = grid.actions.keys()
     random_start_state = np.random.choice(len(possible_start_states))
@@ -112,26 +122,16 @@ def play_game(grid, policy, gamma):
     state_and_reward = [(s,0.0)]
     while not grid.game_over():
         action = policy[s]
-        reward = grid.take_action(action)
+        rand_act = random_action(action)
+        reward = grid.take_action(rand_act)
         s = grid.current_state()
         state_and_reward.append((s,reward))
-    G = 0.0
-    state_and_total = [(s,G)]
-    first = True
-    for s,r in reversed(state_and_reward):
-        if first:
-            reward = r
-            first = False
-            continue
-        G = reward + gamma*G
-        state_and_total.append((s,G))
-        reward = r
-    state_and_total.reverse()
-    return state_and_total[:-1]
+
+    return state_and_reward
 
 if __name__ == '__main__':
     gamma = 0.9
-    SMALL_ENOUGH = 1e-4 # threshold for convergence
+    ALPHA = 0.1
     grid = grid_world()
     V = {}
     policy = {
@@ -148,19 +148,14 @@ if __name__ == '__main__':
     states = grid.all_states()
     returns = {}
     for s in states:
-        if s in grid.actions.keys():
-            returns[s] = []
-        else:
-            V[s] = 0
+        V[s] = 0
 
     for t in range(1000):
         results = play_game(grid,policy,gamma)
-        seen_states = []
-        for s,G in results:
-            if s not in seen_states:
-                seen_states.append(s)
-                returns[s].append(G)
-                V[s] = np.mean(returns[s])
+        for it in range(len(results) - 1):
+            s, _ = results[it]
+            s2, r = results[it + 1]
+            V[s] = V[s] + ALPHA*(r + gamma*V[s2] - V[s])
 
     print "Values:"
     print_values(V,grid)
