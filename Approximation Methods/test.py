@@ -1,6 +1,8 @@
 import numpy as np
 
-a = [1,2,3,4]
-b = [1,2,3,4]
+a = np.array([
+    1        if True else 0,
+    2        if True else 0
+])
 
-print np.dot(a,b)
+print a

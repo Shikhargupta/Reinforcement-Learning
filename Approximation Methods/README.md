@@ -31,3 +31,12 @@ Approximation method could be applied to TD(0) prediction as well but it would b
 <p align="center">
   <img src="approx_td0_prediction.JPG" width="300"/>
 </p>
+
+#### Semi-Gradient SARSA
+Whatever we did for TD(0), same this is done here for SARSA.
+
+![This](approx_sarsa.py) file contains the implementation.
+
+<p align="center">
+  <img src="approx_sarsa.JPG" width="300"/>
+</p>
